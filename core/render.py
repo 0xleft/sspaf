@@ -1,7 +1,7 @@
 import os
 import time
 
-def render(path: str) -> None:
+def render(path: str, dev=True) -> None:
     if path == ".":
         path = os.getcwd()
 
@@ -13,9 +13,15 @@ def render(path: str) -> None:
     except:
         for root, dirs, files in os.walk(os.path.join(path, 'output'), topdown=False):
             for name in files:
-                os.remove(os.path.join(root, name))
+                try:
+                    os.remove(os.path.join(root, name))
+                except:
+                    pass
             for name in dirs:
-                os.rmdir(os.path.join(root, name))
+                try:
+                    os.rmdir(os.path.join(root, name))
+                except:
+                    pass
 
     # copy all non html files to the output folder
     for root, dirs, files in os.walk(path):
@@ -38,6 +44,8 @@ def render(path: str) -> None:
     # render all html files
     for file in os.listdir(path):
         if file.endswith(".html"):
+            if file.endswith("header.html") or file.endswith("footer.html"):
+                continue
             source = os.path.join(path, file)
             
             with open(source, 'r') as f:
@@ -48,16 +56,39 @@ def render(path: str) -> None:
 
             pages.append(file.replace(".html", ".json"))
 
-    # copy assets/init.html from the spf folder
-    source = os.path.join(os.path.dirname(__file__), 'assets', 'init.html')
-    destination = os.path.join(path, 'output', 'index.html')
+            # copy assets/init.html from the spf folder
+            source = os.path.join(os.path.dirname(__file__), 'assets', 'init.html')
+            destination = os.path.join(path, 'output', file)
 
-    with open(source, 'r') as f:
-        content = f.read()
+            with open(source, 'r') as f:
+                content = f.read()
 
-    with open(destination, 'w+') as f:
-        f.write(content.replace("SPF_TITLE", "index"))
-    
+            try:
+                with open(os.path.join(path, file), 'r') as index:
+                    index_content = index.read()
+            except:
+                index_content = ""
+            content = content.replace("SPF_INDEX", index_content)
+
+            try:
+                with open(os.path.join(path, 'header.html'), 'r') as header:
+                    header_content = header.read()
+            except:
+                header_content = ""
+            content = content.replace("SPF_HEADER", header_content)
+
+            try:
+                with open(os.path.join(path, 'footer.html'), 'r') as footer:
+                    footer_content = footer.read()
+            except:
+                footer_content = ""
+            content = content.replace("SPF_FOOTER", footer_content)
+
+
+            with open(destination, 'w+') as f:
+                f.write(content.replace("SPF_TITLE", "index"))
+
+
     source = os.path.join(os.path.dirname(__file__), 'assets', 'spf.js')
     destination = os.path.join(path, 'output', 'spf.js')
 
@@ -66,7 +97,14 @@ def render(path: str) -> None:
 
     content = content.replace("SPF_PAGES", pages.__str__())
 
-    with open(destination, 'w') as f:
+    if dev:
+        content = content.replace("SPF_DEV",
+"""
+""")
+    else:
+        content = content.replace("SPF_DEV", "")
+
+    with open(destination, 'w+') as f:
         f.write(content)
 
     end = time.time()
