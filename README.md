@@ -1,6 +1,8 @@
-# A horribly written single page application framework
+# Install using pip!
 
-(: SSPAF a superglued single page aooplication framework :)
+`pip install sspaf`
+
+# (: SSPAF a superglued single page aooplication framework :)
 
 
 Author: plusleft
