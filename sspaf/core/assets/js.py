@@ -1,6 +1,4 @@
 page = """
-SSPAF_DEV
-
 let pages = SSPAF_PAGES;
 
 page_contents = {};
