@@ -28,4 +28,10 @@ function updateContent() {
         document.getElementById("content").innerHTML = page_contents[current_page].content;
     };
 };
+
+function loadScript(url) {
+    let script = document.createElement("script");
+    script.src = url;
+    document.head.appendChild(script);
+}
 """
