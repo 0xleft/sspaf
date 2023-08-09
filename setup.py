@@ -2,14 +2,14 @@ import setuptools
 
 setuptools.setup(
     name="sspaf",
-    version="0.0.10",
+    version="0.0.16",
     description="A superglued single page application framework",
     author="plusleft",
     url="https://github.com/0xleft/sspaf",
     packages=setuptools.find_packages(),
     install_requires=[
         'flask',
-        'waitress',
+        'waitress'
     ],
     entry_points={
         'console_scripts': [

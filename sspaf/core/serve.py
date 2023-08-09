@@ -7,29 +7,40 @@ import waitress
 
 class ChangeDetector():
     def __init__(self, path: str):
+        super().__init__()
         self.path = path
-        self.last_modified = {}
         self.stop = False
 
-    def run(self):
-        previous_contents = set(os.listdir(self.path))
+    def get_directory_snapshot(self, path):
+        snapshot = {}
+        for root, dirs, files in os.walk(path):
+            # ignore output folder
+            if "output" in root:
+                continue
+            for file in files:
+                path = os.path.join(root, file)
+                with open(path, 'rb') as f:
+                    snapshot[path] = hash(f.read())
+        return snapshot
+
+    def detect_changes(self):
         while True:
             if self.stop:
-                break
-            current_contents = set(os.listdir(self.path))
-            if current_contents != previous_contents:
+                return
+            snapshot = self.get_directory_snapshot(self.path)
+            if snapshot != self.snapshot:
+                self.snapshot = snapshot
                 render.render(self.path)
-                previous_contents = current_contents
-            
-            for filename in current_contents:
-                file_path = os.path.join(self.path, filename)
-                if os.path.isfile(file_path):
-                    modification_time = os.path.getmtime(file_path)
-                    if modification_time > self.last_modified.get(file_path, 0):
-                        render.render(self.path)
-                        self.last_modified[file_path] = modification_time
-            
             time.sleep(1)
+
+    @staticmethod
+    def run(path: str):
+        detector = ChangeDetector(path)
+        detector.snapshot = detector.get_directory_snapshot(path)
+        thread = threading.Thread(target=detector.detect_changes)
+        thread.start()
+
+        return detector
 
 def serve(output_path: str) -> None:
     if output_path == ".":
@@ -56,13 +67,10 @@ def serve(output_path: str) -> None:
     def send_page(path):
         return flask.send_file(output_path + '/output/' + path)
 
-    detector = ChangeDetector(output_path)
-    thread = threading.Thread(target=detector.run)
-    thread.start()
-
+    detector = ChangeDetector.run(output_path)
     render.render(output_path)
     print(f"Starting server on http://localhost:8080/")
     os.system("start http://localhost:8080/")
     waitress.serve(app, host='127.0.0.1', port=8080)
     detector.stop = True
-    thread.join()
+    print(f'Stopped server on http://localhost:8080/')

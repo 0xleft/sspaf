@@ -94,7 +94,7 @@ def init_path(root: str, path: str) -> None:
             continue
 
         html_handle = open(os.path.join(root, path, file), "r")
-        page_content = html_handle.read().replace("\n", "").replace('"', '\\"').replace("'", "\\'")
+        page_content = html_handle.read().replace("\n", "").replace('"', '\\"')
         html_handle.close()
 
         json_handle = open(os.path.join(root, 'output', path, file.replace(".html", ".json")), "w+")
