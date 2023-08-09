@@ -39,10 +39,6 @@ def serve(output_path: str) -> None:
 
     app = flask.Flask(__name__, static_folder=os.path.join(output_path, 'output'))
 
-    @app.route('/<path:path>')
-    def send_file(path):
-        return flask.send_file(output_path + '/output/index.html')
-    
     @app.route('/sspaf.js')
     def send_sspaf():
         return flask.send_file(output_path + '/output/sspaf.js')

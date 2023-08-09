@@ -99,9 +99,9 @@ def init_path(root: str, path: str) -> None:
 
         json_handle = open(os.path.join(root, 'output', path, file.replace(".html", ".json")), "w+")
         if path == "":
-            json_handle.write(f'{{"title": "{file.replace(".html", "")}", "content": "{page_content}"}}')
+            json_handle.write(f'{{"title": "{"/" + file.replace(".html", "")}", "content": "{page_content}"}}')
         else:
-            json_handle.write(f'{{"title": "{path + "/" + file.replace(".html", "")}", "content": "{page_content}"}}')
+            json_handle.write(f'{{"title": "{"/" + path + "/" + file.replace(".html", "")}", "content": "{page_content}"}}')
         json_handle.close()
 
         if path == "":
