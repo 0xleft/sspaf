@@ -1,6 +1,6 @@
 import os
 import time
-from core import render
+import render
 
 def publish(path: str) -> None:
     if path == ".":
