@@ -1,9 +1,9 @@
 import os
 import argparse
 
-from sspaf.core import render, serve, publish, create
+from core import render, serve, publish, create
 
-def args_error():
+def args_error(a):
 
     print("""
 (: SSPAF a superglued single page aooplication framework :)

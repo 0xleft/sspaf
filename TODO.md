@@ -1,3 +1,4 @@
 - [] Docs
 - [] fix some exceptions that accur randomly
 - [] Add better looking examples pages
+- Ok now actualy single page application

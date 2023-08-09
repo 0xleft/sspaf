@@ -2,7 +2,7 @@ import os
 import time
 import flask
 import threading
-from sspaf.core import render
+from core import render
 import waitress
 
 class ChangeDetector():
@@ -41,10 +41,7 @@ def serve(output_path: str) -> None:
 
     @app.route('/<path:path>')
     def send_file(path):
-        try:
-            return flask.send_file(output_path + '/output/' + path)
-        except:
-            return flask.send_file(output_path + '/output/index.html'), 404
+        return flask.send_file(output_path + '/output/index.html')
 
     @app.route('/')
     def send_index():

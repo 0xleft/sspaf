@@ -1,6 +1,6 @@
 import os
 import time
-from sspaf.core.assets import init, js
+from core.assets import init, js
 import shutil
 
 def render(path: str, dev=True) -> None:
@@ -52,13 +52,6 @@ def render(path: str, dev=True) -> None:
     # main folder
     init_path(path, "")
 
-    # subfolders
-    for root, dirs, files in os.walk(path):
-        for dir in dirs:
-            if "output" in dir:
-                continue
-            init_path(root, dir)
-
     end = time.time()
     print(f"The project was rendered in {end - start} seconds")
 
@@ -86,31 +79,32 @@ def init_path(root: str, path: str) -> None:
         json_handle.close()
 
 
-        # create the index page for all the files
-        init_page_content = init.page
-        init_page_content = init_page_content.replace("SSPAF_TITLE", file.replace(".html", ""))
-        init_page_content = init_page_content.replace("SSPAF_INDEX", page_content)
+    # create the index page for all the files
+    init_page_content = init.page
+    init_page_content = init_page_content.replace("SSPAF_TITLE", "index")
+    page_content = open(os.path.join(root, path, "index.html"), "r").read()
+    init_page_content = init_page_content.replace("SSPAF_INDEX", page_content)
 
-        try:
-            header_handle = open(os.path.join(root, path, "header.html"), "r")
-            header_content = header_handle.read()
-            header_handle.close()
-        except FileNotFoundError:
-            header_content = ""
+    try:
+        header_handle = open(os.path.join(root, path, "header.html"), "r")
+        header_content = header_handle.read()
+        header_handle.close()
+    except FileNotFoundError:
+        header_content = ""
 
-        try:
-            footer_handle = open(os.path.join(root, path, "footer.html"), "r")
-            footer_content = footer_handle.read()
-            footer_handle.close()
-        except FileNotFoundError:
-            footer_content = ""
+    try:
+        footer_handle = open(os.path.join(root, path, "footer.html"), "r")
+        footer_content = footer_handle.read()
+        footer_handle.close()
+    except FileNotFoundError:
+        footer_content = ""
 
-        init_page_content = init_page_content.replace("SSPAF_HEADER", header_content)
-        init_page_content = init_page_content.replace("SSPAF_FOOTER", footer_content)
+    init_page_content = init_page_content.replace("SSPAF_HEADER", header_content)
+    init_page_content = init_page_content.replace("SSPAF_FOOTER", footer_content)
 
-        init_page_handle = open(os.path.join(root, 'output', path, file), "w+")
-        init_page_handle.write(init_page_content)
-        init_page_handle.close()
+    init_page_handle = open(os.path.join(root, 'output', path, "index.html"), "w+")
+    init_page_handle.write(init_page_content)
+    init_page_handle.close()
 
     # create the sspaf.js file
     js_content = js.page

@@ -1,6 +1,6 @@
 import os
 import time
-from sspaf.core import render
+from core import render
 
 def publish(path: str) -> None:
     if path == ".":
