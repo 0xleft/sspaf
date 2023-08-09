@@ -17,5 +17,7 @@ Path:
 
 Examples:
     `sspaf serve .`
+
     `sspaf publish /home/plusleft/myproject`
+    
     `sspaf create /home/plusleft/myproject`
