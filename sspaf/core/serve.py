@@ -52,6 +52,9 @@ def serve(output_path: str) -> None:
     def send_index():
         return flask.send_file(output_path + '/output/index.html')
 
+    @app.route('/<path:path>')
+    def send_page(path):
+        return flask.send_file(output_path + '/output/' + path)
 
     detector = ChangeDetector(output_path)
     thread = threading.Thread(target=detector.run)
