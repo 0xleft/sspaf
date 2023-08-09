@@ -2,7 +2,7 @@ import os
 import time
 import flask
 import threading
-import render
+from core import render
 import waitress
 
 class ChangeDetector():

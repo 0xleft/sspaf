@@ -1,6 +1,6 @@
 import os
 import time
-import init, js
+from core.assets import init, js
 import shutil
 
 def render(path: str, dev=True) -> None:
