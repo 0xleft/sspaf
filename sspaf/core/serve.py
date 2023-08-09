@@ -42,6 +42,15 @@ def serve(output_path: str) -> None:
     @app.route('/<path:path>')
     def send_file(path):
         return flask.send_file(output_path + '/output/index.html')
+    
+    @app.route('/sspaf.js')
+    def send_sspaf():
+        return flask.send_file(output_path + '/output/sspaf.js')
+    
+    # jsons
+    @app.route('/<path:path>.json')
+    def send_json(path):
+        return flask.send_file(output_path + '/output/' + path + '.json')
 
     @app.route('/')
     def send_index():
