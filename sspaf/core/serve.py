@@ -2,7 +2,7 @@ import os
 import time
 import flask
 import threading
-from sspaf.core import render
+from core import render
 import waitress
 
 class ChangeDetector():
@@ -57,6 +57,7 @@ def serve(output_path: str) -> None:
 
     render.render(output_path)
     print(f"Starting server on http://localhost:8080/")
+    os.system("start http://localhost:8080/")
     waitress.serve(app, host='127.0.0.1', port=8080)
     detector.stop = True
     thread.join()
