@@ -1,0 +1,2 @@
+- [] Implement and test all of routing
+- [] Clean up code in render and serve since its ugly as hell

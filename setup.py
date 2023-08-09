@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="sspaf",
-    version="0.0.2",
+    version="0.0.3",
     description="A superglued single page application framework",
     author="plusleft",
     url="https://github.com/0xleft/sspaf",
