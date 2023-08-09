@@ -1,7 +1,7 @@
 import os
 import argparse
 
-from core import render, serve, publish, create
+from sspaf.core import render, serve, publish, create
 
 def main():
     arguments = argparse.ArgumentParser()

@@ -1,2 +1,1 @@
-# spf
- superglued profesional framework
+A horribly written single page application framework

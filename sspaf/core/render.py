@@ -1,5 +1,6 @@
 import os
 import time
+from sspaf.core.assets import init, js
 
 def render(path: str, dev=True) -> None:
     if path == ".":
@@ -56,53 +57,48 @@ def render(path: str, dev=True) -> None:
 
             pages.append(file.replace(".html", ".json"))
 
-            # copy assets/init.html from the spf folder
-            source = os.path.join(os.path.dirname(__file__), 'assets', 'init.html')
             destination = os.path.join(path, 'output', file)
 
-            with open(source, 'r') as f:
-                content = f.read()
+            content = init.page
 
             try:
                 with open(os.path.join(path, file), 'r') as index:
                     index_content = index.read()
             except:
                 index_content = ""
-            content = content.replace("SPF_INDEX", index_content)
+
+            content = content.replace("SSPAF_INDEX", index_content)
 
             try:
                 with open(os.path.join(path, 'header.html'), 'r') as header:
                     header_content = header.read()
             except:
                 header_content = ""
-            content = content.replace("SPF_HEADER", header_content)
+            content = content.replace("SSPAF_HEADER", header_content)
 
             try:
                 with open(os.path.join(path, 'footer.html'), 'r') as footer:
                     footer_content = footer.read()
             except:
                 footer_content = ""
-            content = content.replace("SPF_FOOTER", footer_content)
+            content = content.replace("SSPAF_FOOTER", footer_content)
 
 
             with open(destination, 'w+') as f:
-                f.write(content.replace("SPF_TITLE", "index"))
+                f.write(content.replace("SSPAF_TITLE", "index"))
 
 
-    source = os.path.join(os.path.dirname(__file__), 'assets', 'spf.js')
-    destination = os.path.join(path, 'output', 'spf.js')
+    destination = os.path.join(path, 'output', 'sspaf.js')
 
-    with open(source, 'r') as f:
-        content = f.read()
-
-    content = content.replace("SPF_PAGES", pages.__str__())
+    content = js.page
+    content = content.replace("SSPAF_PAGES", pages.__str__())
 
     if dev:
-        content = content.replace("SPF_DEV",
+        content = content.replace("SSPAF_DEV",
 """
 """)
     else:
-        content = content.replace("SPF_DEV", "")
+        content = content.replace("SSPAF_DEV", "")
 
     with open(destination, 'w+') as f:
         f.write(content)

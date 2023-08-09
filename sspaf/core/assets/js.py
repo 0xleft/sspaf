@@ -1,6 +1,7 @@
-SPF_DEV
+page = """
+SSPAF_DEV
 
-let pages = SPF_PAGES;
+let pages = SSPAF_PAGES;
 
 page_contents = {};
 
@@ -27,5 +28,6 @@ function updateContent() {
     if (page_contents[current_page] != undefined) {
         document.title = page_contents[current_page].title;
         document.getElementById("content").innerHTML = page_contents[current_page].content;
-    }
-}
+    };
+};
+"""

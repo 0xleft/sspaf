@@ -2,7 +2,7 @@ import os
 import time
 import flask
 import threading
-from core import render
+from sspaf.core import render
 import waitress
 
 class ChangeDetector():
