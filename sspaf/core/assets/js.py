@@ -24,6 +24,10 @@ function updateContent() {
     current_page = current_page.replace("#", "");
 
     if (page_contents[current_page] != undefined) {
+        let scripts = document.getElementsByClassName("sspaf-script");
+        for (let i = 0; i < scripts.length; i++) {
+            scripts[i].remove();
+        };
         document.title = page_contents[current_page].title;
         document.getElementById("content").innerHTML = page_contents[current_page].content;
     };
@@ -32,6 +36,7 @@ function updateContent() {
 function loadScript(url) {
     let script = document.createElement("script");
     script.src = url;
+    script.className = "sspaf-script";
     document.head.appendChild(script);
 }
 """
